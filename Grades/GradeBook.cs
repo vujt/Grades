@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Grades
 {
@@ -54,6 +55,14 @@ namespace Grades
 
                     _name = value;
                 }
+            }
+        }
+
+        public void WriteGrade(TextWriter destination)
+        {
+            for (int i = 0; i < grades.Count; i++)
+            {
+                destination.WriteLine(grades[i]);
             }
         }
 

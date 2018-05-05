@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,33 +12,17 @@ namespace Grades
         static void Main(string[] args)
         {
             GradeBook book = new GradeBook();
-
-            try
-            {
-                Console.WriteLine("Enter a name");
-                book.Name = Console.ReadLine();
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);                
-            }
-            catch(NullReferenceException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Something went wrong!");
-            }
+            GetBookName(book);
 
             book.NameChanged += OnNameChanged;
-            
-            //book.Name = "Test book";
-            //book.Name = "Grade book";
-            book.AddGrade(91);
-            book.AddGrade(89.5f);
-            book.AddGrade(75);
+            AddGrades(book);
 
+            SaveGrades(book);
+            WriteResults(book);
+        }
+
+        private static void WriteResults(GradeBook book)
+        {
             GradeStatistics stats = book.ComputeStatistics();
 
             Console.WriteLine(book.Name);
@@ -45,6 +30,42 @@ namespace Grades
             WriteResult("Highest grade", (int)stats.HighestGrade);
             WriteResult("Lowest grade", stats.LowestGrade);
             WriteResult("Grade", stats.LetterGrade);
+        }
+
+        private static void SaveGrades(GradeBook book)
+        {
+            using (StreamWriter outputFile = File.CreateText("grades.txt"))
+            {
+                book.WriteGrade(outputFile);
+            }
+        }
+
+        private static void AddGrades(GradeBook book)
+        {
+            book.AddGrade(91);
+            book.AddGrade(89.5f);
+            book.AddGrade(75);
+        }
+
+        private static void GetBookName(GradeBook book)
+        {
+            try
+            {
+                Console.WriteLine("Enter a name");
+                book.Name = Console.ReadLine();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Something went wrong!");
+            }
         }
 
         static void WriteResult(string description, string result)
