@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Grades
 {
-    public class GradeBook
+    public class GradeBook : GradeTracker
     {
         public GradeBook()
         {
@@ -13,7 +13,7 @@ namespace Grades
         }
 
         
-        public GradeStatistics ComputeStatistics()
+        public override GradeStatistics ComputeStatistics()
         {
             GradeStatistics stats =  new GradeStatistics();
 
@@ -28,38 +28,39 @@ namespace Grades
             return stats;
         }
 
-        public void AddGrade(float grade)
+        public override void AddGrade(float grade)
         {
             grades.Add(grade);
         }
 
 
-        private string _name;
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
+        //private string _name;
+        //public string Name
+        //{
+        //    get
+        //    {
+        //        return _name;
+        //    }
 
-            set
-            {
-                if (!String.IsNullOrEmpty(value))
-                {
-                    if (_name != value && NameChanged != null)
-                    {
-                        NameChangedEventArgs args = new NameChangedEventArgs();
-                        args.ExistingName = _name;
-                        args.NewName = value;
-                        NameChanged(this, args);
-                    }
+        //    set
+        //    {
+        //        if (!String.IsNullOrEmpty(value))
+        //        {
+        //            if (_name != value && NameChanged != null)
+        //            {
+        //                NameChangedEventArgs args = new NameChangedEventArgs();
+        //                args.ExistingName = _name;
+        //                args.NewName = value;
+        //                NameChanged(this, args);
+        //            }
 
-                    _name = value;
-                }
-            }
-        }
+        //            _name = value;
+        //        }
+        //    }
+        //}
+        //public event NameChangedDelegate NameChanged;
 
-        public void WriteGrade(TextWriter destination)
+        public override void WriteGrade(TextWriter destination)
         {
             for (int i = 0; i < grades.Count; i++)
             {
@@ -67,7 +68,7 @@ namespace Grades
             }
         }
 
-        public event NameChangedDelegate NameChanged;
+       
 
         protected List<float> grades;
     }
