@@ -12,6 +12,7 @@ namespace Grades
             _name = "Empty";
         }
 
+        
         public GradeStatistics ComputeStatistics()
         {
             GradeStatistics stats =  new GradeStatistics();
@@ -68,6 +69,6 @@ namespace Grades
 
         public event NameChangedDelegate NameChanged;
 
-        private List<float> grades;
+        protected List<float> grades;
     }
 }
